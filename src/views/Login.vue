@@ -1,16 +1,35 @@
 <template>
   <div>
     <h1>Login</h1>
-    <p>{{textMayuscula}}</p>
+    <form @submit.prevent="handleSubmit">
+      <input type="email" placeholder="ingrese email" v-model.trim="email">
+      <input type="password" placeholder="Ingrese contraseña" v-model.trim="password">
+      <button type="submit" :disabled="userStore.loadingUser">Acceso</button>
+    </form>
   </div>
 </template>
 
 <script setup>
-import {computed} from 'vue';
+import { ref } from 'vue';
 import {useUserStore} from '../stores/user';
+//import { useRouter } from 'vue-router';
 
-const userStore = useUserStore()
+  const userStore = useUserStore();
+  //const router = useRouter();
 
-const textMayuscula = computed(() => userStore.userData.toUpperCase())
+  const email = ref('');
+  const password = ref('');
+
+
+  const handleSubmit = async () => {
+    console.log('procesando formulario....');
+    if (!email.value || password.value.length < 6) {
+      return alert('llene los campos');
+    }
+
+    await userStore.loginUser(email.value, password.value);
+    //router.push('/')
+
+  }
 
 </script>
