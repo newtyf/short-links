@@ -34,7 +34,6 @@
               >
             </a-popconfirm>
             <a-button
-              size="default"
               @click="router.push(`/editar/${item.id}`)"
               type="primary"
               :disabled="databaseStore.loading"

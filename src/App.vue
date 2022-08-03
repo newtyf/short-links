@@ -11,13 +11,16 @@
         <a-menu-item v-if="userStore.userData" key="home">
           <router-link to="/">Home</router-link>
         </a-menu-item>
+        <a-menu-item v-if="userStore.userData" key="perfil">
+          <router-link to="/perfil">Perfil</router-link>
+        </a-menu-item>
         <a-menu-item v-if="!userStore.userData" key="login">
           <router-link to="/login">Login</router-link>
         </a-menu-item>
         <a-menu-item v-if="!userStore.userData" key="register">
           <router-link to="/register">Register</router-link>
         </a-menu-item>
-        <a-menu-item v-if="userStore.userData" @click="userStore.logOutUser">
+        <a-menu-item v-if="userStore.userData" @click="userStore.logOutUser" id="logout">
           Log Out
         </a-menu-item>
       </a-menu>
@@ -59,5 +62,8 @@ watch(
 }
 .text-center {
   text-align: center;
+}
+#logout:hover {
+  background-color: rgb(219, 52, 52);
 }
 </style>
