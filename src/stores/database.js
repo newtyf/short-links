@@ -29,7 +29,6 @@ export const useDatabaseStore = defineStore('database', {
         const q = query(collection(db, 'urls'), where('user', "==", auth.currentUser.uid))
         const querySnapshot = await getDocs(q)
         querySnapshot.forEach(doc => {
-          console.log(doc.id, " => ", doc.data());
           this.documents.push({
             id: doc.id,
             ...doc.data()

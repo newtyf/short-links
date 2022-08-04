@@ -1,6 +1,6 @@
 <template>
   <a-layout>
-    <a-layout-header class="header" v-if="!userStore.loadingSession">
+    <a-layout-header class="header">
       <div class="logo" />
       <a-menu
         v-model:selectedKeys="selectedKeys1"
@@ -27,10 +27,8 @@
     </a-layout-header>
     <a-layout-content style="padding: 0px 50px">
       <div class="container">
-        <div>
-          <div v-if="userStore.loadingSession">Loading...</div>
-        </div>
-        <router-view></router-view>
+        <div v-if="userStore.loadingSession">Loading...</div>
+        <router-view v-else></router-view>
       </div>
     </a-layout-content>
   </a-layout>

@@ -11,7 +11,7 @@ const requireAuth = async (to, from, next) => {
   const userStore = useUserStore()
   userStore.loadingSession = true
   const user = await userStore.currentUser()
-
+  console.log(user);
   if (user) {
     next()
   } else {
