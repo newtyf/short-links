@@ -42,7 +42,6 @@ const formState = reactive({
 });
 
 const onFinish = async (value) => {
-  console.log(value);
   const res = await databaseStore.addUrl(formState.url);
   switch (res) {
     case undefined:

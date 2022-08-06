@@ -1,7 +1,17 @@
 <template>
   <a-row>
-    <a-col :xs="{ span: 24 }" :sm="{ span: 12, offset: 6 }" class="text-center" style="margin-bottom: 30px;">
-      <a-avatar :size="90" :src="userStore.userData.photoURL"></a-avatar>
+    <a-col
+      :xs="{ span: 24 }"
+      :sm="{ span: 12, offset: 6 }"
+      class="text-center"
+      style="margin-bottom: 30px"
+    >
+      <div v-show="loadAvatar" class="avatar">
+        <a-spin size="large" />
+      </div>
+      <div v-show="!loadAvatar" id="imageAvatar" class="avatar">
+        <a-image :width="150" :src="userStore.userData.photoURL"></a-image>
+      </div>
     </a-col>
   </a-row>
   <a-row>
@@ -73,7 +83,7 @@
 
 <script setup>
 import { message } from "ant-design-vue";
-import { ref } from "vue";
+import { onMounted, ref } from "vue";
 import { useUserStore } from "../stores/user.js";
 import { UploadOutlined } from "@ant-design/icons-vue";
 
@@ -81,9 +91,10 @@ const userStore = useUserStore();
 
 const fileList = ref([]);
 
+const loadAvatar = ref(true);
+
 const handleChange = (info) => {
   if (info.file.status !== "uploading") {
-
     const isJpgOrPng =
       info.file.type === "image/jpeg" || info.file.type === "image/png";
     if (!isJpgOrPng) {
@@ -127,20 +138,46 @@ const beforeUpload = (file) => {
 };
 
 const onFinish = async (values) => {
-  const res = await userStore.updateUser(userStore.userData.displayName);
+  const res = await userStore.updateUser(
+    userStore.userData.displayName,
+    fileList.value[0]
+  );
 
-  if (fileList.value[0]) {
-    const res = await userStore.updateImageProfile(fileList.value[0])
-    if (res) {
-      return message.error('Problemas al subir tu imagen, intentalo mas tarde 💋')
-    }
-    message.success('Se actualizo tu imagen')
-    handleRemove(fileList.value[0])
+  if (res) {
+    return message.error(
+      "Problemas al subir tu imagen, intentalo mas tarde 💋"
+    );
   }
+  message.success("Se actualizo tu imagen");
+  handleRemove(fileList.value[0]);
 
   if (!res) {
     message.success("Se actualizo tu informacion 🦍");
   }
 };
 
+onMounted(() => {
+  const avatar = document.getElementById("imageAvatar");
+  const imgAvatar = avatar.childNodes[1].firstChild;
+  imgAvatar.addEventListener("load", () => {
+    loadAvatar.value = false;
+  });
+});
 </script>
+
+<style>
+.avatar {
+  height: 150px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.avatar .ant-image-img {
+  border-radius: 50%;
+  min-height: 150px;
+  object-fit: cover;
+}
+.avatar .ant-image-mask {
+  border-radius: 50%;
+}
+</style>

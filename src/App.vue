@@ -1,6 +1,6 @@
 <template>
   <a-layout>
-    <a-layout-header class="header">
+    <a-layout-header v-if="!userStore.loadingSession" class="header">
       <div class="logo" />
       <a-menu
         v-model:selectedKeys="selectedKeys1"
@@ -27,7 +27,7 @@
     </a-layout-header>
     <a-layout-content style="padding: 0px 50px">
       <div class="container">
-        <div v-if="userStore.loadingSession">Loading...</div>
+        <div v-if="userStore.loadingSession" class="spin"><a-spin size="large" /></div>
         <router-view v-else></router-view>
       </div>
     </a-layout-content>
@@ -63,5 +63,11 @@ watch(
 }
 #logout:hover {
   background-color: rgb(219, 52, 52);
+}
+.spin {
+  height: calc(100vh - 64px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 </style>

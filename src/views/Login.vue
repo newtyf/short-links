@@ -72,7 +72,6 @@ const formState = reactive({
 });
 
 const onFinish = async (values) => {
-  console.log("Success:", values);
   const res = await userStore.loginUser(formState.email, formState.password);
 
   switch (res) {

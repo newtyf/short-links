@@ -102,9 +102,7 @@ const validatePass = async (_rule, value) => {
 };
 
 const onFinish = async (values) => {
-  console.log("Success:", values);
   const res = await userStore.registerUser(formState.email, formState.password);
-  console.log(res);
   switch (res) {
     case undefined:
       message.success('Bienvenido cabro chico 🐲');

@@ -26,10 +26,7 @@
               @confirm="confirm(item.id)"
               @cancel="cancel"
             >
-              <a-button
-                size="default"
-                danger
-                :disabled="databaseStore.loading"
+              <a-button size="default" danger :disabled="databaseStore.loading"
                 >Eliminar</a-button
               >
             </a-popconfirm>
@@ -39,9 +36,15 @@
               :disabled="databaseStore.loading"
               >Editar</a-button
             >
+            <a-tooltip>
+              <template #title>
+                <span>Copiar Link</span>
+              </template>
+              <a-button @click="copyURL(item.id)"><copy-outlined /></a-button>
+            </a-tooltip>
           </a-space>
         </template>
-        <p style="overflow: hidden ;">{{ item.name }}</p>
+        <p style="overflow: hidden">{{ item.name }}</p>
       </a-card>
     </a-space>
   </div>
@@ -52,6 +55,7 @@ import { useUserStore } from "../stores/user";
 import { useDatabaseStore } from "../stores/database";
 import { useRouter } from "vue-router";
 import { message } from "ant-design-vue";
+import { CopyOutlined } from "@ant-design/icons-vue";
 
 const userStore = useUserStore();
 const databaseStore = useDatabaseStore();
@@ -60,12 +64,12 @@ const router = useRouter();
 databaseStore.getUrls();
 
 const confirm = async (id) => {
-  const res = await databaseStore.deleteUrl(id)
+  const res = await databaseStore.deleteUrl(id);
 
   if (!res) {
-    return message.success('se elimino con exito 🐐')
+    return message.success("se elimino con exito 🐐");
   }
-  return message.error(res)
+  return message.error(res);
 
   // switch (res) {
   //   case undefined:
@@ -74,9 +78,21 @@ const confirm = async (id) => {
   //   default:
   //     break;
   // }
+};
+
+const copyURL = (id) => {
+  if (!navigator.clipboard) {
+    return message.error('No se pudo copiar al portapapeles 😭')
+  }
+
+  const path = `${window.location.origin}/${id}`
+  console.log(path);
+  navigator.clipboard.writeText(path).then(() => {
+    message.success('Se copio el link 🥵')
+  })
 }
 
 const cancel = () => {
-  message.success('No se elimino')
-}
+  message.success("No se elimino");
+};
 </script>
