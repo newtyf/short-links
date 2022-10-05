@@ -24,3 +24,9 @@ dist-ssr
 *.sw?
 
 .vscode
+
+# Firebase cache
+.firebase/
+firebase-debug.log
+.firebaserc
+firestore.rules
